@@ -10,7 +10,7 @@ router.post("/signup", async (req, res) => {
 		if (!username || !email || !firebaseUid) {
 			return res
 				.status(400)
-				.json({ message: "Username and email are required" });
+				.json({ message: "Username, email, and Firebase UID are required" });
 		}
 
 		// Check if a user with the provided Firebase UID already exists
@@ -23,19 +23,23 @@ router.post("/signup", async (req, res) => {
 		const newBookshelf = new Bookshelf();
 		await newBookshelf.save();
 
+		// Create and save the new User with the associated Bookshelf
 		const newUser = new User({
 			username,
 			email,
 			firebaseUid,
-			bookshelf: newBookshelf._id,
+			bookshelf: newBookshelf._id, // associate the new Bookshelf with the new User
 		});
 		await newUser.save();
 
-		res.status(201).json({ message: "User created successfully" });
+		res
+			.status(201)
+			.json({ message: "User created successfully", userId: newUser._id });
 	} catch (err) {
 		console.error(err); // Log the error for debugging
 
-		if (err.code === 11000) {
+		if (err.code === 11000 || err.keyPattern) {
+			// Check for duplicate key error
 			// This is the error code for a duplicate key error
 			return res
 				.status(400)

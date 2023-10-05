@@ -7,11 +7,6 @@ const bookSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-	title: {
-		type: String,
-		required: true,
-	},
-	author: String,
 });
 
 const bookshelfSchema = new Schema({

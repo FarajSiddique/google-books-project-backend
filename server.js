@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const googleBooksRoutes = require("./GoogleBooks");
 const NYTBooksRoute = require("./NYTBooks");
 const userRoutes = require("./userRoutes");
+const bookshelfRoutes = require("./bookshelfRoutes");
 const app = express();
 const PORT = 5000;
 const mongoDBPassword = process.env.MONGO_DB_PASSWORD;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/book", googleBooksRoutes);
 app.use("/dashboard", NYTBooksRoute);
 app.use("/api/users", userRoutes);
+app.use("/api/bookshelf", bookshelfRoutes);
 
 mongoose
 	.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
