@@ -11,6 +11,15 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	firebaseUid: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	bookshelf: {
+		type: Schema.Types.ObjectId,
+		ref: "Bookshelf",
+	},
 });
 
 const User = mongoose.model("User", userSchema);
