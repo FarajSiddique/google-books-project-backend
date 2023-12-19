@@ -23,6 +23,15 @@ router.get("/search", async (req, res) => {
 		const response = await axios.get(
 			`${GOOGLE_BOOKS_API_URL}/volumes?q=${query}&key=${API_KEY}`
 		);
+		const booksData = response.data.items;
+		if (booksData) {
+			booksData.forEach((book) => {
+				if (book.id) {
+					book.volumeInfo.imageLinks = book.volumeInfo.imageLinks || {};
+					book.volumeInfo.imageLinks.coverImage = `https://books.google.com/books/content?id=${book.id}&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api`;
+				}
+			});
+		}
 		res.json(response.data);
 	} catch (error) {
 		console.error("Error fetching books", error);
@@ -32,11 +41,16 @@ router.get("/search", async (req, res) => {
 
 router.get("/:bookId", async (req, res) => {
 	try {
-		const bookId = req.query.bookId;
+		const bookId = req.params.bookId;
 		const response = await axios.get(
 			`${GOOGLE_BOOKS_API_URL}/volumes/${bookId}?key=${API_KEY}`
 		);
-		res.json(response.data);
+		const bookData = response.data;
+		if (bookData.id) {
+			bookData.volumeInfo.imageLinks = bookData.volumeInfo.imageLinks || {};
+			bookData.volumeInfo.imageLinks.coverImage = `https://books.google.com/books/content?id=${bookData.id}&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api`;
+		}
+		res.json(bookData);
 	} catch (error) {
 		console.error("Error fetching book details", error);
 		res.status(500).json({ message: "Internal Server Error" });

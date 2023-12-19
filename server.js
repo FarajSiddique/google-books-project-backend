@@ -10,7 +10,7 @@ const bookshelfRoutes = require("./bookshelfRoutes");
 const app = express();
 const PORT = 5000;
 const mongoDBPassword = process.env.MONGO_DB_PASSWORD;
-const uri = `mongodb+srv://BookBuddyDB:${mongoDBPassword}@bookbuddy.8quxc4g.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb://BookBuddyDB:${mongoDBPassword}@ac-rcndxgn-shard-00-00.8quxc4g.mongodb.net:27017,ac-rcndxgn-shard-00-01.8quxc4g.mongodb.net:27017,ac-rcndxgn-shard-00-02.8quxc4g.mongodb.net:27017/?ssl=true&replicaSet=atlas-zzu1en-shard-0&authSource=admin&retryWrites=true&w=majority`;
 
 app.use(cors());
 app.use(express.json());
