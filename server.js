@@ -7,6 +7,7 @@ const googleBooksRoutes = require("./GoogleBooks");
 const NYTBooksRoute = require("./NYTBooks");
 const userRoutes = require("./userRoutes");
 const bookshelfRoutes = require("./bookshelfRoutes");
+const deleteAccount = require("./deleteAccount");
 const app = express();
 const PORT = 5000;
 const mongoDBPassword = process.env.MONGO_DB_PASSWORD;
@@ -18,6 +19,7 @@ app.use("/api/book", googleBooksRoutes);
 app.use("/dashboard", NYTBooksRoute);
 app.use("/api/users", userRoutes);
 app.use("/api/bookshelf", bookshelfRoutes);
+app.use(deleteAccount);
 
 mongoose
 	.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })

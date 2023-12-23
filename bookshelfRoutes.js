@@ -26,7 +26,7 @@ router.post("/add", async (req, res) => {
 		}
 
 		// Check if book already exists in bookshelf
-		if (userBookshelf.books.includes(isbn)) {
+		if (userBookshelf.books.some((book) => book.isbn === isbn)) {
 			return res
 				.status(400)
 				.json({ message: "Book already exists in bookshelf" });

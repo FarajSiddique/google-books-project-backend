@@ -50,4 +50,24 @@ router.post("/signup", async (req, res) => {
 	}
 });
 
+router.get("/:userId", async (req, res) => {
+	try {
+		const { userId } = req.params;
+
+		// Use an object as a filter in findOne()
+		const user = await User.findOne({ firebaseUid: userId }).populate(
+			"bookshelf"
+		);
+
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+
+		res.status(200).json(user);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+});
+
 module.exports = router;
