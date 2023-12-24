@@ -20,8 +20,14 @@ router.get("/book-details-by-isbn", async (req, res) => {
 router.get("/search", async (req, res) => {
 	try {
 		const query = req.query.q;
+		if (!query) {
+			return res.status(400).json({ message: "Query parameter is required" });
+		}
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 40;
+		const startIndex = (page - 1) * limit;
 		const response = await axios.get(
-			`${GOOGLE_BOOKS_API_URL}/volumes?q=${query}&key=${API_KEY}`
+			`${GOOGLE_BOOKS_API_URL}/volumes?q=${query}&key=${API_KEY}&startIndex=${startIndex}&maxResults=${limit}&printType=books&orderBy=relevance`
 		);
 		const booksData = response.data.items;
 		if (booksData) {
